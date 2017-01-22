@@ -1,0 +1,31 @@
+{
+  "variables": {
+    "aws_access_key": "<WAT>",
+    "aws_secret_key": "<NOPE>"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-west-2",
+    "source_ami": "ami-b7a114d7",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "single-host {{timestamp}}",
+    "subnet_id": "subnet-00355677",
+    "security_group_id": "sg-7521900d"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y tmux htop build-essential zlib1g-dev cmake python-pip python-dev libjpeg-dev golang python-opencv",
+      "sudo -H pip install --upgrade pip",
+      "sudo -H pip install 'gym[atari]'",
+      "sudo -H pip install universe",
+      "sudo -H pip install tensorflow",
+      "sudo -H pip install scipy"
+    ]
+  }]
+}
